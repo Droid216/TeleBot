@@ -16,18 +16,6 @@ class CreationPhotoPack(StatesGroup):
     type_pack = State()
 
 
-class EditProduct(StatesGroup):
-    product_name = State()
-    photo = State()
-    price = State()
-    description = State()
-    availability = State()
-
-
-class SearchProduct(StatesGroup):
-    search = State()
-
-
 # @dp.message_handler(is_admin=True, commands=['start'], state=None)
 async def cmd_start_admin(message: types.Message) -> None:
     await message.answer(text='Hello, admin',
