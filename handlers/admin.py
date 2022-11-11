@@ -27,24 +27,11 @@ class EditProduct(StatesGroup):
 class SearchProduct(StatesGroup):
     search = State()
 
-print([state for state in CreationPhotoPack.states_names if state != CreationPhotoPack.caption.state])
+
 # @dp.message_handler(is_admin=True, commands=['start'], state=None)
 async def cmd_start_admin(message: types.Message) -> None:
     await message.answer(text='Hello, admin',
                          reply_markup=kb_admin.get_kb_start())
-
-
-# @dp.message_handler(Text(equals='Помощь', ignore_case=True), is_admin=True, state=None)
-async def help_admin_handler(message: types.Message) -> None:
-    text = '''
-    <b>/start</b> - <em>начало работы бота</em>
-    <b>Каталог</b> - <em>вызов каталога опубликованных товаров</em>
-    <b>Добавить товар</b> - <em>начало процессса добавления товара в каталог</em>
-    <b>Товары ожидающие публикации</b> - <em>вызов каталога ожидающих публикации товаров</em>
-    <b>Помощь</b> - <em>вызов подсказки по командам бота</em>
-    '''
-    await message.answer(text=text,
-                         parse_mode='HTML')
 
 
 # @dp.message_handler(Text(equals='Каталог', ignore_case=True), is_admin=True, state=None)
@@ -129,17 +116,7 @@ async def gallery_next_handler(message: types.Message, state: FSMContext) -> Non
     await CreationPhotoPack.next()
     await message.answer(text='Select photo type',
                          reply_markup=kb_admin.get_kb3_cancel())
-
-
-# @dp.message_handler(Text(contains=['Private', 'Life', 'Erotic']), is_admin=True, state=CreationPhotoPack.type_pack)
-async def type_photo_handler(message: types.Message, state: FSMContext) -> None:
-    async with state.proxy() as data:
-        data['type_pack'] = message.text
-    await data_base.add_photo(state)
-    await state.finish()
-    await message.answer(text='Photo pack created',
-                         reply_markup=kb_admin.get_kb_start())
-
+    
 
 def register_handlers_admin(dp: Dispatcher) -> None:
 
