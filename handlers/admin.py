@@ -117,6 +117,16 @@ async def gallery_next_handler(message: types.Message, state: FSMContext) -> Non
     await message.answer(text='Select photo type',
                          reply_markup=kb_admin.get_kb3_cancel())
     
+    
+# @dp.message_handler(is_admin=True, state=CreationPhotoPack.type_pack)
+async def type_photo_handler(message: types.Message, state: FSMContext) -> None:
+    async with state.proxy() as data:
+        data['type_pack'] = message.text
+    await data_base.add_photo(state)
+    await state.finish()
+    await message.answer(text='Photo pack created',
+                         reply_markup=kb_admin.get_kb_start())
+    
 
 def register_handlers_admin(dp: Dispatcher) -> None:
 
